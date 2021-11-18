@@ -77,6 +77,9 @@ type BasicInfo struct {
 type HeroTarget interface {
 	ReceiveHeroDamage(target *Hero)
 }
+type MonsterTarget interface {
+	ReceiveMonsterDamage(target *Monster)
+}
 
 ////////////// Functions
 func CreateHero(name string, hp int, damage int) *Hero {
@@ -154,4 +157,45 @@ func (hero *Hero) GetBasicInfo() BasicInfo {
 func (hero *Hero) ShowBasicInfo() {
 	fmt.Printf("name: %v, Hp: %v, status: %v, weaponName: %v, itemName: %v, finalDamage: %v\n",
 		hero.name, hero.Hp, hero.status, hero.weapon.name, hero.item.name, hero.finalDamage)
+}
+
+////////////// Monster Methods
+func (monster *Monster) sumAttack() int {
+	monster.finalDamage += monster.effect.passiveDamage
+	return monster.finalDamage
+}
+
+func (hero *Hero) ReceiveMonsterDamage(opponent *Monster) {
+	hero.Hp -= (opponent.sumAttack() - hero.effect.attackReduction)
+	changeStatus(&hero.Hp, &hero.status)
+}
+
+func (monster *Monster) ReceiveMonsterDamage(opponent *Monster) {
+	monster.Hp -= (opponent.sumAttack() - monster.effect.attackReduction)
+	changeStatus(&monster.Hp, &monster.status)
+}
+
+func (soldier *Soldier) ReceiveMonsterDamage(opponent *Monster) {
+	soldier.Hp -= (opponent.sumAttack() - soldier.effect.attackReduction)
+	changeStatus(&soldier.Hp, &soldier.status)
+}
+
+func (monster *Monster) UseItem(items *Item) {
+	monster.finalDamage += items.attackUp - monster.item.attackUp
+	monster.effect.attackReduction = items.attackNull - monster.item.attackNull
+	monster.item = *items
+}
+
+func (monster *Monster) Punch(target MonsterTarget) {
+	target.ReceiveMonsterDamage(monster)
+}
+
+func (monster *Monster) GetBasicInfo() BasicInfo {
+	return BasicInfo{name: monster.name, Hp: monster.Hp, status: monster.status,
+		weaponName: monster.weapon.name, itemName: monster.item.name, finalDamage: monster.finalDamage}
+}
+
+func (monster *Monster) ShowBasicInfo() {
+	fmt.Printf("name: %v, Hp: %v, status: %v, weaponName: %v, itemName: %v, finalDamage: %v\n",
+		monster.name, monster.Hp, monster.status, monster.weapon.name, monster.item.name, monster.finalDamage)
 }

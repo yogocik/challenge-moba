@@ -21,4 +21,11 @@ func main() {
 	fmt.Println("Hero attack soldier =>", soldier)
 	hero.Punch(hero2)
 	fmt.Println("Hero attack hero2 =>", hero2)
+
+	monster.Punch(hero)
+	fmt.Println("Monster attack hero =>", hero)
+	monster.Punch(soldier)
+	fmt.Println("Monster attack soldier =>", soldier)
+	monster.Punch(monster2)
+	fmt.Println("Monster attack monster2 =>", monster2)
 }
