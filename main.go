@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	. "moba/creature"
 )
 
@@ -11,6 +12,13 @@ func main() {
 	var monster2 *Monster = CreateMonster("Monster2", 100, 20)
 	var soldier *Soldier = CreateSoldier("Soldier", 50, 10)
 	var soldier2 *Soldier = CreateSoldier("Soldier2", 50, 10)
-	sword := CreateWeapon("Excalibur", 200)
-	elixir := CreateItem("Elixir", 50, 20)
+	// sword := CreateWeapon("Excalibur", 200)
+	// elixir := CreateItem("Elixir", 50, 20)
+
+	hero.Punch(monster)
+	fmt.Println("Hero attack monster =>", monster)
+	hero.Punch(soldier)
+	fmt.Println("Hero attack soldier =>", soldier)
+	hero.Punch(hero2)
+	fmt.Println("Hero attack hero2 =>", hero2)
 }
