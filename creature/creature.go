@@ -81,6 +81,10 @@ type MonsterTarget interface {
 	ReceiveMonsterDamage(target *Monster)
 }
 
+type SoldierTarget interface {
+	ReceiveSoldierDamage(target *Soldier)
+}
+
 ////////////// Functions
 func CreateHero(name string, hp int, damage int) *Hero {
 	return &Hero{name: name, Hp: hp, baseDamage: damage, finalDamage: damage, status: "alive"}
@@ -198,4 +202,51 @@ func (monster *Monster) GetBasicInfo() BasicInfo {
 func (monster *Monster) ShowBasicInfo() {
 	fmt.Printf("name: %v, Hp: %v, status: %v, weaponName: %v, itemName: %v, finalDamage: %v\n",
 		monster.name, monster.Hp, monster.status, monster.weapon.name, monster.item.name, monster.finalDamage)
+}
+
+//////////////// Soldier Methods
+
+func (soldier *Soldier) sumAttack() int {
+	soldier.finalDamage += soldier.effect.passiveDamage
+	return soldier.finalDamage
+}
+
+func (hero *Hero) ReceiveSoldierDamage(opponent *Soldier) {
+	hero.Hp -= (opponent.sumAttack() - hero.effect.attackReduction)
+	changeStatus(&hero.Hp, &hero.status)
+}
+
+func (monster *Monster) ReceiveSoldierDamage(opponent *Soldier) {
+	monster.Hp -= (opponent.sumAttack() - monster.effect.attackReduction)
+	changeStatus(&monster.Hp, &monster.status)
+}
+
+func (soldier *Soldier) ReceiveSoldierDamage(opponent *Soldier) {
+	soldier.Hp -= (opponent.sumAttack() - soldier.effect.attackReduction)
+	changeStatus(&soldier.Hp, &soldier.status)
+}
+
+func (soldier *Soldier) UseItem(items *Item) {
+	soldier.finalDamage += items.attackUp - soldier.item.attackUp
+	soldier.effect.attackReduction = items.attackNull - soldier.item.attackNull
+	soldier.item = *items
+}
+
+func (soldier *Soldier) AttachSoldier(weapons *Weapon) {
+	soldier.finalDamage += weapons.damage - soldier.weapon.damage
+	soldier.weapon = *weapons
+}
+
+func (soldier *Soldier) Punch(target SoldierTarget) {
+	target.ReceiveSoldierDamage(soldier)
+}
+
+func (soldier *Soldier) GetBasicInfo() BasicInfo {
+	return BasicInfo{name: soldier.name, Hp: soldier.Hp, status: soldier.status,
+		weaponName: soldier.weapon.name, itemName: soldier.item.name, finalDamage: soldier.finalDamage}
+}
+
+func (soldier *Soldier) ShowBasicInfo() {
+	fmt.Printf("name: %v, Hp: %v, status: %v, weaponName: %v, itemName: %v, finalDamage: %v\n",
+		soldier.name, soldier.Hp, soldier.status, soldier.weapon.name, soldier.item.name, soldier.finalDamage)
 }

@@ -16,16 +16,24 @@ func main() {
 	// elixir := CreateItem("Elixir", 50, 20)
 
 	hero.Punch(monster)
-	fmt.Println("Hero attack monster =>", monster)
+	fmt.Println("Hero attack monster =>", monster.GetBasicInfo())
 	hero.Punch(soldier)
-	fmt.Println("Hero attack soldier =>", soldier)
+	fmt.Println("Hero attack soldier =>", soldier.GetBasicInfo())
 	hero.Punch(hero2)
-	fmt.Println("Hero attack hero2 =>", hero2)
+	fmt.Println("Hero attack hero2 =>", hero2.GetBasicInfo())
+
+	soldier.Punch(hero)
+	fmt.Println("Soldier attack hero =>", hero.GetBasicInfo())
+	soldier.Punch(soldier2)
+	fmt.Println("Soldier attack soldier2 =>", soldier2.GetBasicInfo())
+	soldier.Punch(monster)
+	fmt.Println("Soldier attack monster =>", monster.GetBasicInfo())
 
 	monster.Punch(hero)
-	fmt.Println("Monster attack hero =>", hero)
+	fmt.Println("Monster attack hero =>", hero.GetBasicInfo())
 	monster.Punch(soldier)
-	fmt.Println("Monster attack soldier =>", soldier)
+	fmt.Println("Monster attack soldier =>", soldier.GetBasicInfo())
 	monster.Punch(monster2)
-	fmt.Println("Monster attack monster2 =>", monster2)
+	fmt.Println("Monster attack monster2 =>", monster2.GetBasicInfo())
+
 }
