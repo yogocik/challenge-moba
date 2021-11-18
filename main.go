@@ -12,8 +12,8 @@ func main() {
 	var monster2 *Monster = CreateMonster("Monster2", 100, 20)
 	var soldier *Soldier = CreateSoldier("Soldier", 50, 10)
 	var soldier2 *Soldier = CreateSoldier("Soldier2", 50, 10)
-	// sword := CreateWeapon("Excalibur", 200)
-	// elixir := CreateItem("Elixir", 50, 20)
+	sword := CreateWeapon("Excalibur", 200)
+	elixir := CreateItem("Elixir", 50, 20)
 
 	hero.Punch(monster)
 	fmt.Println("Hero attack monster =>", monster.GetBasicInfo())
@@ -36,4 +36,11 @@ func main() {
 	monster.Punch(monster2)
 	fmt.Println("Monster attack monster2 =>", monster2.GetBasicInfo())
 
+	hero.AttachWeapon(sword)
+	hero.UseItem(elixir)
+
+	hero.ShowBasicInfo()
+	hero.Punch(monster)
+	fmt.Println("Monster after attacked by armed hero")
+	monster.ShowBasicInfo()
 }
